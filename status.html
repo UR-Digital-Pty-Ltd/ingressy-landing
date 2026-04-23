@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ingressy Status</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px 20px;
+      background: #f7f7f7;
+      color: #111;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    h1 {
+      margin-bottom: 8px;
+    }
+    .muted {
+      color: #666;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .status-pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: bold;
+      background: #e8f5e9;
+      color: #1b5e20;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ingressy System Status</h1>
+  <p class="muted">Live status for the Ingressy platform.</p>
+
+  <div class="card">
+    <h2>Current Status</h2>
+    <div class="status-pill">Operational</div>
+    <p class="muted">All core systems are working normally.</p>
+  </div>
+  <script>
+  const statusEl = document.querySelector(".status-pill");
+  const messageEl = document.querySelector(".card .muted");
+
+  async function checkStatus() {
+    try {
+      const res = await fetch("https://api.ingressy.com/me");
+      const data = await res.json();
+
+      if (data.ok) {
+        statusEl.innerText = "Operational";
+        statusEl.style.background = "#e8f5e9";
+        statusEl.style.color = "#1b5e20";
+        messageEl.innerText = "All core systems are working normally.";
+      } else {
+        throw new Error("API not OK");
+      }
+    } catch (e) {
+      statusEl.innerText = "Degraded";
+      statusEl.style.background = "#fff3e0";
+      statusEl.style.color = "#e65100";
+      messageEl.innerText = "We are experiencing issues with the API.";
+    }
+  }
+
+  checkStatus();
+</script>
+</body>
+</html>
